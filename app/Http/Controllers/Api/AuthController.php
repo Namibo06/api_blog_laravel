@@ -18,7 +18,6 @@ class AuthController extends Controller
         $user = new User;
 
         try{
-            $user->name = $req->name;
             $user->email = $req->email;
             $user->password =$encryptedPass;
             $user->save();
@@ -60,5 +59,27 @@ class AuthController extends Controller
                 'message'=>''.$e
             ]);
         }
+    }
+
+    //salva name,last name e foto
+    public function save_user_info(Request $req){
+        $user = User::find(Auth::user()->id);
+        $user->name = $req->name;
+        $user->lastName = $req->lastName;
+        $photo='';
+        //verifica se tem foto
+        if($req->photo!=''){
+            //evita duplicação de nome da foto
+            $photo=time().'.jpg';
+            //faz decode de string da foto e salva no storage/profiles
+            file_put_contents('storage/profiles/'.$photo,base64_decode($req->photo));
+            $user->photo=$photo;
+        }
+        $user->update();
+
+        return response()->json([
+            'success'=>true,
+            'photo'=>$photo
+        ]);
     }
 }

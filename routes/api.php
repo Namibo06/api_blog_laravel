@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login',[AuthController::class,'login']);
 Route::get('logout',[AuthController::class,'logout']);
 Route::post('register',[AuthController::class,'register']);
+Route::post('save_user_info',[AuthController::class,'save_user_info']);
 
 
 //posts
